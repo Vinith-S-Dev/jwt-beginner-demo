@@ -1,0 +1,22 @@
+# Python virtual environment
+venv/
+.venv/
+env/
+
+# Compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local environment variables
+.env
+
+# IDE / Editor configurations
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
