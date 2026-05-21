@@ -7,21 +7,14 @@ from jose import JWTError, jwt
 
 app = FastAPI()
 
-# =========================================================
-# CONFIGURATION
-# =========================================================
+# config - change this in production!
 SECRET_KEY = "my_super_secret_key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-# =========================================================
-# OAUTH2 PASSWORD BEARER
-# =========================================================
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
-# =========================================================
-# PASSWORD HASHING (Native Bcrypt)
-# =========================================================
+# hashing helpers
 def get_password_hash(password: str) -> str:
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
@@ -29,9 +22,7 @@ def get_password_hash(password: str) -> str:
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
-# =========================================================
-# MOCK DATABASE
-# =========================================================
+# mock db
 fake_users_db = {
     "admin": {
         "username": "admin",
@@ -45,18 +36,14 @@ fake_users_db = {
     },
 }
 
-# =========================================================
-# JWT TOKEN GENERATION
-# =========================================================
+# jwt generator
 def create_access_token(data: dict):
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-# =========================================================
-# GET CURRENT USER (Dependency)
-# =========================================================
+# authentication dependency
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -73,10 +60,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     except JWTError:
         raise credentials_exception
 
-# =========================================================
-# API ROUTES
-# =========================================================
-
+# endpoints
 @app.post("/login")
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     user = fake_users_db.get(form_data.username)

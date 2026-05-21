@@ -1,49 +1,37 @@
-# 🔑 Simple FastAPI JWT Authentication Demo
+# FastAPI JWT Login Demo
 
-A beginner-friendly, single-file FastAPI project showing how to implement user authentication with **JSON Web Tokens (JWT)** and basic role validation.
+A simple python backend demonstrating how to implement JWT authentication and basic role-based access control in FastAPI.
 
-## 🚀 How to Run Locally
+## How to Run:
 
-### 1. Set Up and Activate Environment
-```bash
-# Create a virtual environment
-python -m venv venv
+1. Create and activate a python virtual environment:
+   ```bash
+   python -m venv venv
+   # Windows:
+   .\venv\Scripts\activate
+   # macOS/Linux:
+   source venv/bin/activate
+   ```
 
-# Activate it (Windows)
-.\venv\Scripts\activate
+2. Install requirements:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-# Activate it (macOS/Linux)
-source venv/bin/activate
-```
+3. Start uvicorn development server:
+   ```bash
+   uvicorn main:app --reload
+   ```
+   Open your browser to `http://127.0.0.1:8000/docs` to test the API with Swagger UI.
 
-### 2. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Start the Server
-```bash
-uvicorn main:app --reload
-```
-The server will start running on **`http://127.0.0.1:8000`**.
-
----
-
-## 👥 Demo Users
-
-You can log in using these preset credentials:
+## Test Credentials:
 
 | Username | Password | Role |
 |---|---|---|
-| **`admin`** | `1234` | admin |
-| **`vinith`** | `password` | employee |
+| admin | 1234 | admin |
+| vinith | password | employee |
 
----
-
-## 🔌 API Endpoints
-
-Once the server is running, go to **`http://127.0.0.1:8000/docs`** to see the interactive Swagger UI and test these endpoints:
-
-1. **`POST /login`**: Submits a form with username and password to get a bearer JWT token.
-2. **`GET /dashboard`**: Access a generic dashboard profile (requires any valid token).
-3. **`GET /admin`**: Access an admin panel (requires a token with the `admin` role claim).
+## Endpoints:
+- `POST /login` - Login with credentials and retrieve a bearer JWT token.
+- `GET /dashboard` - Protected dashboard route (requires any authenticated token).
+- `GET /admin` - Admin-only route (requires a token with the "admin" role).
